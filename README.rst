@@ -8,7 +8,8 @@ Quick start
 -----------
 
 1. Clone Botmather installs with command (
-        for http - pip install git+https://github.com/mondaylabs/botmother.git  
+        for http - pip install git+https://github.com/mondaylabs/botmother.git
+
         for ssh  - pip install git+ssh://git@github.com:mondaylabs/botmother.git
     )
 

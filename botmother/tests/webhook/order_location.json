@@ -1,0 +1,22 @@
+{
+  "message": {
+    "chat": {
+      "first_name": "Тестовый пользователь",
+      "id": 38024172,
+      "type": "private",
+      "username": "username"
+    },
+    "date": 1481694086,
+    "from": {
+      "first_name": "Тестовый пользователь",
+      "id": 38024172,
+      "username": "username"
+    },
+    "location": {
+      "latitude": 59.756686,
+      "longitude": 34.425866
+    },
+    "message_id": 4014
+  },
+  "update_id": 844780563
+}

@@ -1,0 +1,26 @@
+{
+  "message": {
+    "chat": {
+      "first_name": "Тестовый пользователь",
+      "id": 38024172,
+      "type": "private",
+      "username": "username"
+    },
+    "date": 1481654631,
+    "from": {
+      "first_name": "Тестовый пользователь",
+      "id": 38024172,
+      "username": "username"
+    },
+    "message_id": 3966,
+    "text": "/start",
+    "entities": [
+      {
+        "length": 6,
+        "offset": 0,
+        "type": "bot_command"
+      }
+    ]
+  },
+  "update_id": 844780548
+}

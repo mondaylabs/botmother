@@ -1,0 +1,19 @@
+{
+  "message": {
+    "chat": {
+      "first_name": "Саидравшан",
+      "id": 38024172,
+      "type": "private",
+      "username": "Username"
+    },
+    "date": 1481700666,
+    "from": {
+      "first_name": "Саидравшан",
+      "id": 38024172,
+      "username": "Username"
+    },
+    "message_id": 4109,
+    "text": "Бухара"
+  },
+  "update_id": 844780594
+}

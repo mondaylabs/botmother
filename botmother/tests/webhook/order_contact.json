@@ -1,0 +1,23 @@
+{
+  "message": {
+    "chat": {
+      "first_name": "Тестовый пользователь",
+      "id": 38024172,
+      "type": "private",
+      "username": "username"
+    },
+    "date": 1481694083,
+    "from": {
+      "first_name": "Тестовый пользователь",
+      "id": 38024172,
+      "username": "username"
+    },
+    "message_id": 4012,
+    "contact": {
+      "first_name": "Тестовый пользователь",
+      "phone_number": "998910000000",
+      "user_id": 38024172
+    }
+  },
+  "update_id": 844780562
+}

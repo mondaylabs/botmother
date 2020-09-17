@@ -1,0 +1,19 @@
+{
+  "message": {
+    "chat": {
+      "first_name": "Тестовый пользователь",
+      "id": 38024172,
+      "type": "private",
+      "username": "username"
+    },
+    "date": 1481694086,
+    "from": {
+      "first_name": "Тестовый пользователь",
+      "id": 38024172,
+      "username": "username"
+    },
+    "message_id": 7066,
+    "text": "Тест адрес"
+  },
+  "update_id": 844782211
+}

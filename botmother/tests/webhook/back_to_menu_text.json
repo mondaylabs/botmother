@@ -1,0 +1,19 @@
+{
+  "message": {
+    "chat": {
+      "first_name": "Тест",
+      "id": 38024172,
+      "type": "private",
+      "username": "Username"
+    },
+    "date": 1481698056,
+    "from": {
+      "first_name": "Тест",
+      "id": 38024172,
+      "username": "GreenTag"
+    },
+    "message_id": 4080,
+    "text": "🏠 Вернуться"
+  },
+  "update_id": 844780582
+}

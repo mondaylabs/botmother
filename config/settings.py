@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'botmother',
+    'example'
 ]
 
 MIDDLEWARE = [
@@ -162,3 +163,4 @@ except ImportError:
     pass
 
 CORS_ORIGIN_ALLOW_ALL = DEBUG
+TESTING = ('test' == sys.argv[1]) if sys.argv else False

@@ -1,4 +1,4 @@
-from botmother.utils import BotRouter
+from botmother.utils.bot_router import BotRouter
 from botmother.tests.request import TelegramTestCase
 
 

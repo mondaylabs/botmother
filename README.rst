@@ -8,15 +8,15 @@ Quick start
 -----------
 
 1. Clone Botmather installs with command (
-        * for http - pip install git+https://github.com/mondaylabs/botmother.git
-        * for ssh  - pip install git+ssh://git@github.com:mondaylabs/botmother.git
+        * for http - pip install git+https://github.com/mondaylabs/botmother.git@v0.0.1
+        * for ssh  - pip install git+ssh://git@github.com/mondaylabs/botmother.git@v0.0.1
     )
 
 2. Add "telegram" to your INSTALLED_APPS setting like this and BOT_TOKEN to settings_dev::
 
     INSTALLED_APPS = [
         ...
-        'telegram',
+        'botMother',
     ]
 
     BOT_TOKEN = '1381661048:AAGykSLTZifIkQD79fDOTxQb9kaVTZ1S_-2'

@@ -11,5 +11,4 @@ class Command(BaseCommand):
         bot_url = f'https://api.telegram.org/bot{settings.BOT_TOKEN}'
         webhook = kwargs["domain"].strip("https://").strip("/")
         requests.get(f'{bot_url}/deleteWebhook')
-        requests.get(f'{bot_url}/setWebhook?url=https://{webhook}/telegram')
-
+        requests.get(f'{bot_url}/setWebhook?url=https://{webhook}/botmother')

@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class TelegramConfig(AppConfig):
-    name = 'telegram'
+class BotmotherConfig(AppConfig):
+    name = 'botmother'

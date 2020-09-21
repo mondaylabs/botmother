@@ -1,6 +1,7 @@
-import json
-import requests
 from django.conf import settings
+import json
+from urllib.error import HTTPError
+from urllib.request import urlopen, Request
 
 _test_requests = []
 
@@ -23,10 +24,20 @@ class TelegramAPI:
             _test_requests.append({'method': method, 'data': data})
             return
 
-        return requests.post(
-            f'https://api.telegram.org/bot{self.token}/{method}',
-            data=data
-        ).json()
+        if 'reply_markup' in data and data['reply_markup'] is None:
+            del data['reply_markup']
+
+        try:
+            body = urlopen(Request(
+                f'https://api.telegram.org/bot{self.token}/{method}',
+                json.dumps(data).encode(),
+                headers={'Accept': 'application/json', 'Content-Type': 'application/json'},
+            )).read().decode()
+        except HTTPError as e:
+            body = e.read().decode()
+            print(body)
+
+        return json.loads(body)
 
     def send_message(self, text, chat_id, reply_markup=None, **kwargs):
         reply_markup = json.dumps(reply_markup) if reply_markup else None
@@ -47,8 +58,7 @@ class TelegramAPI:
             **kwargs
         })
 
-    def forward_message(self, to_chat_id, from_chat_id, message_id, reply_markup=None, **kwargs):
-        reply_markup = json.dumps(reply_markup) if reply_markup else None
+    def forward_message(self, to_chat_id, from_chat_id, message_id, **kwargs):
         return self.send('forwardMessage', {
             'chat_id': to_chat_id,
             'from_chat_id': from_chat_id,

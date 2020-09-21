@@ -18,3 +18,5 @@ vandelay-py.js
 files
 .coverage
 /htmlcov
+
+db.sqlite3

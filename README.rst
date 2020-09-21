@@ -8,8 +8,8 @@ Quick start
 -----------
 
 1. Clone BotMather installs with command (
-        * for http - pip install git+https://github.com/mondaylabs/botmother.git@v0.0.6
-        * for ssh  - pip install git+ssh://git@github.com/mondaylabs/botmother.git@v0.0.6
+        * for http - pip install git+https://github.com/mondaylabs/botmother.git@v0.0.7
+        * for ssh  - pip install git+ssh://git@github.com/mondaylabs/botmother.git@v0.0.7
     )
 
 2. Add "botMother" to your INSTALLED_APPS setting like this and BOT_TOKEN to settings_dev::

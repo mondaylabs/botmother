@@ -24,6 +24,7 @@ SECRET_KEY = 'w99yaag9a9-w&&a(eqjacnu2xjxe2z!jul%4@gp7k4k=p509pd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', False)
 
+TESTING = ('test' == sys.argv[1]) if sys.argv else False
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -53,14 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    'corsheaders.middleware.CorsMiddleware',
 ]
-
-CORS_ORIGIN_WHITELIST = (
-    'http://127.0.0.1',
-    'http://localhost:3000',
-)
 
 ROOT_URLCONF = 'config.urls'
 
@@ -75,7 +69,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'core.utils.context_processors.custom',
             ],
         },
     },
@@ -88,12 +81,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'postgres'),
-        'USER': os.environ.get('POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
-        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
-        'PORT': os.environ.get('POSTGRES_PORT', 5432),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR + '/' + 'db.sqlite3',
     }
 }
 
@@ -161,6 +150,3 @@ try:
     from .settings_dev import *
 except ImportError:
     pass
-
-CORS_ORIGIN_ALLOW_ALL = DEBUG
-TESTING = ('test' == sys.argv[1]) if sys.argv else False

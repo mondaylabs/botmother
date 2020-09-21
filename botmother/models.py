@@ -111,8 +111,6 @@ class Message(models.Model):
 
 class Push(models.Model):
     sms = models.TextField()
-    image = models.ImageField(null=True, blank=True)
-    image_token = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True, editable=False, null=True)
     updated_at = models.DateTimeField(auto_now=True, editable=False, null=True)
 

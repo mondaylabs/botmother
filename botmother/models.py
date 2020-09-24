@@ -35,6 +35,11 @@ class Chat(models.Model):
         telegram = TelegramAPI(settings.BOT_TOKEN)
         return telegram.send_message(text, chat_id or self.chat_id, reply_markup, **kwargs)
 
+    def send(self, method, reply_markup=None, **kwargs):
+        telegram = TelegramAPI(settings.BOT_TOKEN)
+        reply_markup = json.dumps(reply_markup) if reply_markup else None
+        return telegram.send(method, {**kwargs, 'reply_markup': reply_markup})
+
     def send_location(self, lon, lat, reply_markup=None, chat_id=None, **kwargs):
         telegram = TelegramAPI(settings.BOT_TOKEN)
         return telegram.send_location(lon, lat, chat_id or self.chat_id, reply_markup, **kwargs)

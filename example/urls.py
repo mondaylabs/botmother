@@ -5,6 +5,7 @@ from example.handlers import main
 
 def dispatch(router):
     router.command('/start', main.start)
+    router.any(main.menu)
 
 
 urlpatterns = [

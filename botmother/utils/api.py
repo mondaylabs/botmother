@@ -48,6 +48,15 @@ class TelegramAPI:
             **kwargs
         })
 
+    def send_message(self, text, chat_id, reply_markup=None, **kwargs):
+        reply_markup = json.dumps(reply_markup) if reply_markup else None
+        return self.send('sendMessage', {
+            'chat_id': chat_id,
+            'text': text,
+            'reply_markup': reply_markup,
+            **kwargs
+        })
+
     def send_location(self, lon, lat, chat_id, reply_markup=None, **kwargs):
         reply_markup = json.dumps(reply_markup) if reply_markup else None
         return self.send('sendLocation', {

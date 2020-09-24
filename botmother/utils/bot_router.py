@@ -9,6 +9,8 @@ from django.utils import timezone
 from botmother.utils.location import location_field
 from botmother.utils.string import parse_integer
 
+CONTINUE = 'continue_router_match'
+
 
 class BotRouter:
     """
@@ -122,64 +124,64 @@ class BotRouter:
         else:
             return None
 
-    def command(self, command, function, last_action=None, chat_type=None, edited=False, reply_type=None):
+    def command(self, command, function, last_action=None, chat_type=None, edited=False, reply_type=None, extra={}):
         """ Routes command type webhook """
         if self.type != Message.TYPE_COMMAND:
             return
 
         # command be equals to message text
         if self.message.text == command:
-            self.run(function, last_action, chat_type, edited, reply_type)
+            self.run(function, last_action, chat_type, edited, reply_type, extra)
 
-    def starts_with(self, prefix, function, last_action=None, chat_type=None, edited=False, reply_type=None):
+    def starts_with(self, prefix, function, last_action=None, chat_type=None, edited=False, reply_type=None, extra={}):
         """ Routes text type webhook that starts with given prefix """
         text = self.message.text
         if type(text) == str and text.startswith(prefix):
-            self.run(function, last_action, chat_type, edited, reply_type)
+            self.run(function, last_action, chat_type, edited, reply_type, extra)
 
-    def text(self, text, function, last_action=None, chat_type=None, edited=False, reply_type=None):
+    def text(self, text, function, last_action=None, chat_type=None, edited=False, reply_type=None, extra={}):
         """ Routes text type webhook """
         if self.type != Message.TYPE_TEXT:
             return
 
         # text must be none or equals to message text
         if text is None or text == self.message.text or (isinstance(text, list) and self.message.text in text):
-            self.run(function, last_action, chat_type, edited, reply_type)
+            self.run(function, last_action, chat_type, edited, reply_type, extra)
 
-    def callback(self, prefix, function, last_action=None, chat_type=None, edited=False, reply_type=None):
+    def callback(self, prefix, function, last_action=None, chat_type=None, edited=False, reply_type=None, extra={}):
         """ Routes callback type webhook """
         if self.type != Message.TYPE_CALLBACK:
             return
 
         # prefix must be none or be start of message text
         if prefix is None or self.message.text.startswith(prefix):
-            self.run(function, last_action, chat_type, edited, reply_type)
+            self.run(function, last_action, chat_type, edited, reply_type, extra)
 
-    def location(self, function, last_action=None, chat_type=None, edited=False, reply_type=None):
+    def location(self, function, last_action=None, chat_type=None, edited=False, reply_type=None, extra={}):
         """ Routes location type webhook to handlers """
         if self.type == Message.TYPE_LOCATION:
-            self.run(function, last_action, chat_type, edited, reply_type)
+            self.run(function, last_action, chat_type, edited, reply_type, extra)
 
-    def contact(self, function, last_action=None, chat_type=None, edited=False, reply_type=None):
+    def contact(self, function, last_action=None, chat_type=None, edited=False, reply_type=None, extra={}):
         """ Routes contact type webhook to handlers """
         if self.type == Message.TYPE_CONTACT:
-            self.run(function, last_action, chat_type, edited, reply_type)
+            self.run(function, last_action, chat_type, edited, reply_type, extra)
 
-    def new_photo(self, function, last_action=None, chat_type=None, edited=False, reply_type=None):
+    def new_photo(self, function, last_action=None, chat_type=None, edited=False, reply_type=None, extra={}):
         """ Routes to handlers when you add group photo """
         if self.type == Message.TYPE_NEW_CHAT_PHOTO:
-            self.run(function, last_action, chat_type, edited, reply_type)
+            self.run(function, last_action, chat_type, edited, reply_type, extra)
 
-    def any(self, function, last_action=None, chat_type=None, edited=False, reply_type=None):
+    def any(self, function, last_action=None, chat_type=None, edited=False, reply_type=None, extra={}):
         """ Routes any type of webhook request """
-        self.run(function, last_action, chat_type, edited, reply_type)
+        self.run(function, last_action, chat_type, edited, reply_type, extra)
 
-    def on_checkout_query(self, function, last_action=None, chat_type=None, edited=False, reply_type=None):
+    def on_checkout_query(self, function, last_action=None, chat_type=None, edited=False, reply_type=None, extra={}):
         """ Routes pre_checkout_query type of webhook request """
         if self.pre_checkout_query:
-            self.run(function, last_action, chat_type, edited, reply_type)
+            self.run(function, last_action, chat_type, edited, reply_type, extra)
 
-    def run(self, function, last_action=None, chat_type=None, edited=False, reply_type=None):
+    def run(self, function, last_action=None, chat_type=None, edited=False, reply_type=None, extra={}):
         """ Runs handler function """
 
         if self.runned:
@@ -203,7 +205,7 @@ class BotRouter:
         if reply_type is not None and rt != reply_type:
             return
 
-        handler_type = self.type if self.type else 'Unknown Type'
+        print('RUNNING HANDLER: ' + function.__name__ + " TYPE: " + self.type if self.type else 'Unknown Type')
 
         result = function(
             update_id=self.update_id,
@@ -217,13 +219,10 @@ class BotRouter:
             callback_id=self.callback_id,
             raw_message=self.raw_message,
             pre_checkout_query=self.pre_checkout_query,
+            extra=extra,
         )
 
-        self.runned = not result
-
-        if self.runned:
-            print(f'RUNNING HANDLER: {(self.redirect_action or function).__name__} TYPE: {handler_type}')
-            self.chat.last_action = action_name(self.redirect_action or function)
+        self.runned = result != CONTINUE
 
         self.chat.last_activity = timezone.now()
         self.chat.save()

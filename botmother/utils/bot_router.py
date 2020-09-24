@@ -224,6 +224,7 @@ class BotRouter:
 
         self.runned = result != CONTINUE
 
+        self.chat.last_action = action_name(self.redirect_action or function)
         self.chat.last_activity = timezone.now()
         self.chat.save()
 

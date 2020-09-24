@@ -228,6 +228,6 @@ class BotRouter:
         self.chat.last_activity = timezone.now()
         self.chat.save()
 
-    def _redirect(self, action, extra={}, **kwargs):
+    def _redirect(self, action, **kwargs):
         self.redirect_action = action
-        action(chat=self.chat, redirect=self._redirect, extra=extra, **kwargs)
+        action(chat=self.chat, redirect=self._redirect, **kwargs)

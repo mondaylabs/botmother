@@ -1,8 +1,10 @@
 from botmother.utils.bot_router import CONTINUE
 
 
-def start(chat, **kwargs):
+def start(chat, redirect, **kwargs):
     chat.send_message('Hi {name}'.format(name=chat.first_name))
+    kwargs['extra'] = {}
+    redirect(menu, **kwargs)
     return CONTINUE
 
 

@@ -86,6 +86,8 @@ DATABASES = {
     }
 }
 
+BOTMOTHER_CHAT_MODEL = 'botmother.Chat'
+
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 

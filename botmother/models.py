@@ -106,7 +106,7 @@ class Message(models.Model):
 
     id = models.BigIntegerField(_('id'), primary_key=True)
     date = models.DateTimeField()
-    chat = models.ForeignKey(Chat, CASCADE, related_name='messages')
+    chat = models.ForeignKey(settings.BOTMOTHER_CHAT_MODEL, CASCADE, related_name='messages')
     text = models.TextField(null=True, blank=True, verbose_name=_("text"))
     type = models.CharField(max_length=255, default=TYPE_TEXT)
 

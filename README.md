@@ -10,8 +10,8 @@ Quick start
 -----------
 
 1. Install it by running
- * http - `pip install git+https://github.com/mondaylabs/botmother.git@v0.2.4`
- * ssh  - `pip install git+ssh://git@github.com/mondaylabs/botmother.git@v0.2.4`
+ * http - `pip install git+https://github.com/mondaylabs/botmother.git@v0.2.5`
+ * ssh  - `pip install git+ssh://git@github.com/mondaylabs/botmother.git@v0.2.5`
 
 2. Add "botMother" to your INSTALLED_APPS setting like this and BOT_TOKEN to settings_dev:  
 

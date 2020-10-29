@@ -38,7 +38,7 @@ urlpatterns = [
 
 4. Run `python manage.py migrate`.
 
-5. Run `ngrok` copy url `https://***.ngror.io`.
+5. Run `ngrok` copy url `https://***.ngrok.io`.
 
 6. Run `python manage.py set_webhook https://***.ngrok.io`.
 

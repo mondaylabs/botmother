@@ -5,7 +5,7 @@ Python Telegram bot
 This is a Telegram bot library for Django
 
 
-> This library is not production ready! Please don't use it!
+> THIS LIBRARY IS NOT PRODUCTION READY! PLEASE DON'T USE IT YET!
 
 Quick start
 -----------
@@ -18,8 +18,8 @@ Quick start
 
 ```python
 INSTALLED_APPS = [
- ...
- 'botMother',
+    ...
+    'botMother',
 ]
 
 BOT_TOKEN = '<bots token>'

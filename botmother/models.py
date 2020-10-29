@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from botmother.utils.api import TelegramAPI
 
 
-class Chat(models.Model):
+class AbstractChat(models.Model):
     """ All botmother bot chats (private/group) with there id ( ID is not autoincrement field ) """
 
     chat_id = models.BigIntegerField()
@@ -48,9 +48,9 @@ class Chat(models.Model):
         telegram = TelegramAPI(settings.BOT_TOKEN)
         return telegram.send_photo(photo, self.chat_id, reply_markup, **kwargs)
 
-    def forward_message(self, to_chat_id, message_id, reply_markup=None, **kwargs):
+    def forward_message(self, to_chat_id, message_id, **kwargs):
         telegram = TelegramAPI(settings.BOT_TOKEN)
-        return telegram.forward_message(to_chat_id, self.chat_id, message_id, reply_markup, **kwargs)
+        return telegram.forward_message(to_chat_id, self.chat_id, message_id, **kwargs)
 
     def send_answer_pre_checkout_query(self, id, ok, **kwargs):
         telegram = TelegramAPI(settings.BOT_TOKEN)
@@ -83,7 +83,12 @@ class Chat(models.Model):
         )
 
     class Meta:
-        db_table = 'telegram_chats'
+        abstract = True
+
+
+class Chat(AbstractChat):
+    class Meta(AbstractChat.Meta):
+        swappable = 'BOTMOTHER_CHAT_MODEL'
 
 
 class Message(models.Model):

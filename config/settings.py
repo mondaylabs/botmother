@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'botmother',
-    'example'
+    'example',
 ]
 
 MIDDLEWARE = [

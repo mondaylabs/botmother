@@ -2,12 +2,18 @@ import json
 
 from django.conf import settings
 
-from botmother.models import Message, Chat
+from botmother.models import Message
 from botmother.utils.helpers import action_name
 from django.utils import timezone
 
 from botmother.utils.location import location_field
 from botmother.utils.string import parse_integer
+from django.apps import apps
+
+chat_app_label = settings.BOTMOTHER_CHAT_MODEL.split('.')[0]
+chat_model_name = settings.BOTMOTHER_CHAT_MODEL.split('.')[1]
+
+Chat = apps.get_model(chat_app_label, chat_model_name)
 
 CONTINUE = 'continue_router_match'
 

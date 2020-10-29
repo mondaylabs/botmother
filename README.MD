@@ -1,6 +1,5 @@
-=====
-Python Telegram bot
-=====
+# Python Telegram bot
+
 
 This is a Telegram bot library for Django
 

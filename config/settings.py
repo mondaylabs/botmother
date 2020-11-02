@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'botmother',
-    'example'
+    'example',
 ]
 
 MIDDLEWARE = [
@@ -85,6 +85,8 @@ DATABASES = {
         'NAME': BASE_DIR + '/' + 'db.sqlite3',
     }
 }
+
+BOTMOTHER_CHAT_MODEL = 'botmother.Chat'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

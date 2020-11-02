@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from botmother.utils.api import TelegramAPI
 
 
-class Chat(Model, TelegramAPI):
+class AbstractChat(Model, TelegramAPI):
     """ All botmother bot chats (private/group) with there id ( ID is not autoincrement field ) """
 
     def __init__(self, *args, **kwargs):
@@ -36,7 +36,12 @@ class Chat(Model, TelegramAPI):
         self.data = json.dumps(data)
 
     class Meta:
-        db_table = 'telegram_chats'
+        abstract = True
+
+
+class Chat(AbstractChat):
+    class Meta(AbstractChat.Meta):
+        swappable = 'BOTMOTHER_CHAT_MODEL'
 
 
 class Message(models.Model):
@@ -54,7 +59,7 @@ class Message(models.Model):
 
     id = models.BigIntegerField(_('id'), primary_key=True)
     date = models.DateTimeField()
-    chat = models.ForeignKey(Chat, CASCADE, related_name='messages')
+    chat = models.ForeignKey(settings.BOTMOTHER_CHAT_MODEL, CASCADE, related_name='messages')
     text = models.TextField(null=True, blank=True, verbose_name=_("text"))
     type = models.CharField(max_length=255, default=TYPE_TEXT)
 

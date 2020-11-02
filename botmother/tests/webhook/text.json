@@ -4,16 +4,16 @@
       "first_name": "Тестовый пользователь",
       "id": 38024172,
       "type": "private",
-      "username": "username"
+      "username": "Username"
     },
-    "date": 1481694086,
+    "date": 1481703026,
     "from": {
       "first_name": "Тестовый пользователь",
       "id": 38024172,
-      "username": "username"
+      "username": "Username"
     },
-    "message_id": 7066,
-    "text": "Тест адрес"
+    "message_id": 4122,
+    "text": "⭐  Хиты продаж"
   },
-  "update_id": 844782211
+  "update_id": 844780599
 }

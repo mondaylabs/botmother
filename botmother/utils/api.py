@@ -15,16 +15,22 @@ def clear_test_requests():
     _test_requests = []
 
 
-class TelegramAPI:
-    def __init__(self, token):
+class TelegramAPI(object):
+    def __init__(self, token=None, chat_id=None):
         self.token = token
+        if chat_id:
+            self.chat_id = chat_id
 
     def send(self, method, data):
         if settings.TESTING:
             _test_requests.append({'method': method, 'data': data})
             return
 
-        if 'reply_markup' in data and data['reply_markup'] is None:
+        data.setdefault('chat_id', self.chat_id)
+
+        if data.get('reply_markup'):
+            data['reply_markup'] = json.dumps(data['reply_markup'])
+        else:
             del data['reply_markup']
 
         try:
@@ -39,28 +45,15 @@ class TelegramAPI:
 
         return json.loads(body)
 
-    def send_message(self, text, chat_id, reply_markup=None, **kwargs):
-        reply_markup = json.dumps(reply_markup) if reply_markup else None
+    def send_message(self, text, reply_markup=None, **kwargs):
         return self.send('sendMessage', {
-            'chat_id': chat_id,
             'text': text,
             'reply_markup': reply_markup,
             **kwargs
         })
 
-    def send_message(self, text, chat_id, reply_markup=None, **kwargs):
-        reply_markup = json.dumps(reply_markup) if reply_markup else None
-        return self.send('sendMessage', {
-            'chat_id': chat_id,
-            'text': text,
-            'reply_markup': reply_markup,
-            **kwargs
-        })
-
-    def send_location(self, lon, lat, chat_id, reply_markup=None, **kwargs):
-        reply_markup = json.dumps(reply_markup) if reply_markup else None
+    def send_location(self, lon, lat, reply_markup=None, **kwargs):
         return self.send('sendLocation', {
-            'chat_id': chat_id,
             'longitude': lon,
             'latitude': lat,
             'reply_markup': reply_markup,
@@ -75,18 +68,15 @@ class TelegramAPI:
             **kwargs
         })
 
-    def send_photo(self, photo, chat_id, reply_markup=None, **kwargs):
-        reply_markup = json.dumps(reply_markup) if reply_markup else None
+    def send_photo(self, photo, reply_markup=None, **kwargs):
         return self.send('sendPhoto', {
-            'chat_id': chat_id,
             'photo': photo,
             'reply_markup': reply_markup,
             **kwargs
         })
 
-    def send_answer_pre_checkout_query(self, id, ok, chat_id, **kwargs):
+    def send_answer_pre_checkout_query(self, id, ok, **kwargs):
         return self.send('answerPreCheckoutQuery', {
-            'chat_id': chat_id,
             'ok': ok,
             'pre_checkout_query_id': id,
             **kwargs
@@ -101,13 +91,10 @@ class TelegramAPI:
             currency,
             prices,
             start_parameter,
-            chat_id,
             reply_markup=None,
             **kwargs
     ):
-        reply_markup = json.dumps(reply_markup) if reply_markup else None
         return self.send('sendInvoice', {
-            'chat_id': chat_id,
             'title': title,
             'description': description,
             'start_parameter': start_parameter,

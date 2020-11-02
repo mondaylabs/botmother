@@ -1,0 +1,3 @@
+DEBUG = True
+
+BOT_TOKEN = 'token'

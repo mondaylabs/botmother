@@ -40,7 +40,7 @@ urlpatterns = [
 
 5. Run `ngrok` copy url `https://***.ngrok.io`.
 
-6. Run `python manage.py set_webhook https://***.ngrok.io`.
+6. Run `python manage.py setwebhook https://***.ngrok.io/<your url>`.
 
 7. Run ``python manage.py runserver``.
 

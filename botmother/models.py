@@ -3,15 +3,19 @@ from django.conf import settings
 from botmother.querysets.message import MessageQuerySet
 from botmother.querysets.chat import ChatQuerySet
 import json
-from django.db.models import JSONField
+from django.db.models import JSONField, Model
 from django.db import models
 from django.db.models import CASCADE
 from django.utils.translation import ugettext_lazy as _
 from botmother.utils.api import TelegramAPI
 
 
-class Chat(models.Model):
+class Chat(Model, TelegramAPI):
     """ All botmother bot chats (private/group) with there id ( ID is not autoincrement field ) """
+
+    def __init__(self, *args, **kwargs):
+        Model.__init__(self, *args, **kwargs)
+        TelegramAPI.__init__(self, settings.BOT_TOKEN, self.chat_id)
 
     chat_id = models.BigIntegerField()
     type = models.CharField(max_length=255)
@@ -30,57 +34,6 @@ class Chat(models.Model):
     @last_data.setter
     def last_data(self, data):
         self.data = json.dumps(data)
-
-    def send_message(self, text, reply_markup=None, chat_id=None, **kwargs):
-        telegram = TelegramAPI(settings.BOT_TOKEN)
-        return telegram.send_message(text, chat_id or self.chat_id, reply_markup, **kwargs)
-
-    def send(self, method, reply_markup=None, **kwargs):
-        telegram = TelegramAPI(settings.BOT_TOKEN)
-        reply_markup = json.dumps(reply_markup) if reply_markup else None
-        return telegram.send(method, {**kwargs, 'reply_markup': reply_markup})
-
-    def send_location(self, lon, lat, reply_markup=None, chat_id=None, **kwargs):
-        telegram = TelegramAPI(settings.BOT_TOKEN)
-        return telegram.send_location(lon, lat, chat_id or self.chat_id, reply_markup, **kwargs)
-
-    def send_photo(self, photo, reply_markup=None, **kwargs):
-        telegram = TelegramAPI(settings.BOT_TOKEN)
-        return telegram.send_photo(photo, self.chat_id, reply_markup, **kwargs)
-
-    def forward_message(self, to_chat_id, message_id, reply_markup=None, **kwargs):
-        telegram = TelegramAPI(settings.BOT_TOKEN)
-        return telegram.forward_message(to_chat_id, self.chat_id, message_id, reply_markup, **kwargs)
-
-    def send_answer_pre_checkout_query(self, id, ok, **kwargs):
-        telegram = TelegramAPI(settings.BOT_TOKEN)
-        return telegram.send_answer_pre_checkout_query(id, ok, self.chat_id, **kwargs)
-
-    def send_invoice(
-            self,
-            title,
-            description,
-            payload,
-            provider_token,
-            start_parameter,
-            currency,
-            prices,
-            reply_markup=None,
-            **kwargs
-    ):
-        telegram = TelegramAPI(settings.BOT_TOKEN)
-        return telegram.send_invoice(
-            title,
-            description,
-            payload,
-            provider_token,
-            currency,
-            prices,
-            start_parameter,
-            self.chat_id,
-            reply_markup,
-            **kwargs
-        )
 
     class Meta:
         db_table = 'telegram_chats'

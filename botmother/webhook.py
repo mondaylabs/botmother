@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from botmother.utils.bot_router import BotRouter
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -9,11 +11,9 @@ def webhook(dispatch):
         try:
             dispatch(BotRouter(request.body.decode("utf-8")))
         except Exception as error:
+            if settings.DEBUG:
+                raise error
             print(error)
-            import logging
-
-            logger = logging.getLogger(__name__)
-            logger.error(error)
 
         return JsonResponse({'ok': True})
 

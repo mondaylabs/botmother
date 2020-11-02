@@ -3,42 +3,42 @@
     "chat_instance": "4830668401963449353",
     "data": "first_order_product_count_1,3",
     "from": {
-      "first_name": "Саидравшан",
+      "first_name": "Test User",
       "id": 38024172,
-      "username": "GreenTag"
+      "username": "test_user"
     },
     "id": "163312577056487078",
     "message": {
       "caption": "test",
       "chat": {
-        "first_name": "Саидравшан",
+        "first_name": "Test User",
         "id": 38024172,
         "type": "private",
-        "username": "GreenTag"
+        "username": "test_user"
       },
       "date": 1487097356,
       "edit_date": 1487097628,
       "from": {
-        "first_name": "CandelaBot",
+        "first_name": "MotherBot",
         "id": 227872095,
-        "username": "CandelaTestBot"
+        "username": "MotherBot"
       },
       "message_id": 6854,
       "photo": [
         {
-          "file_id": "AgADAgADzacxG18NlQ3gtpL2qe65Z5w8Sw0ABGgFlUydcUn-roUCAAEC",
+          "file_id": "AgADAgADzacxG18NlQ3gtpL2qe65Z5w8Sw0ABGgFlUydcUn-roUCAEasd",
           "file_size": 1438,
           "height": 55,
           "width": 90
         },
         {
-          "file_id": "AgADAgADzacxG18NlQ3gtpL2qe65Z5w8Sw0ABNitGJVgjsK6sIUCAAEC",
+          "file_id": "AgADAgADzacxG18NlQ3gtpL2qe65Z5w8Sw0ABNitGJVgjsK6sIUCAasdC",
           "file_size": 14361,
           "height": 197,
           "width": 320
         },
         {
-          "file_id": "AgADAgADzacxG18NlQ3gtpL2qe65Z5w8Sw0ABDNasIeiGg7Fr4UCAAEC",
+          "file_id": "AgADAgADzacxG18NlQ3gtaapL2qe65Z5w8Sw0ABDNasIeiGg7Fr4UCAa",
           "height": 315,
           "width": 512
         }

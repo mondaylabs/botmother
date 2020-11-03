@@ -148,7 +148,9 @@ FRONTEND_DOMAIN = os.environ.get('FRONTEND_DOMAIN', 'https://mondaylabs.tech')
 BACKEND_DOMAIN = os.environ.get('BACKEND_DOMAIN', 'https://mondaylabs.tech')
 COMPANY_NAME = 'Monday'
 
+BOT_TOKEN = ''
+
 try:
-    from .settings_dev import *
+    from .settings_dev1 import *
 except ImportError:
     pass

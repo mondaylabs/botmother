@@ -1,9 +1,10 @@
 from django.conf import settings
+from django.contrib.postgres.fields import JSONField
 
 from botmother.querysets.message import MessageQuerySet
 from botmother.querysets.chat import ChatQuerySet
 import json
-from django.db.models import JSONField, Model
+from django.db.models import Model
 from django.db import models
 from django.db.models import CASCADE
 from django.utils.translation import ugettext_lazy as _

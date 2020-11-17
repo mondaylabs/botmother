@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.contrib.postgres.fields import JSONField
 
 from botmother.querysets.message import MessageQuerySet
 from botmother.querysets.chat import ChatQuerySet
@@ -23,7 +22,7 @@ class AbstractChat(Model, TelegramAPI):
     username = models.CharField(max_length=255, null=True, blank=True)
     first_name = models.CharField(max_length=255, null=True, blank=True)
     last_action = models.CharField(max_length=255, null=True)
-    data = JSONField(null=True)
+    data = models.TextField(null=True)
     last_activity = models.DateTimeField(auto_now_add=True, editable=False, null=True)
 
     objects = ChatQuerySet.as_manager()

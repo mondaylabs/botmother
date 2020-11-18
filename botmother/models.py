@@ -3,7 +3,7 @@ from django.conf import settings
 from botmother.querysets.message import MessageQuerySet
 from botmother.querysets.chat import ChatQuerySet
 import json
-from django.db.models import JSONField, Model
+from django.db.models import Model
 from django.db import models
 from django.db.models import CASCADE
 from django.utils.translation import ugettext_lazy as _
@@ -22,7 +22,7 @@ class AbstractChat(Model, TelegramAPI):
     username = models.CharField(max_length=255, null=True, blank=True)
     first_name = models.CharField(max_length=255, null=True, blank=True)
     last_action = models.CharField(max_length=255, null=True)
-    data = JSONField(null=True)
+    data = models.TextField(null=True)
     last_activity = models.DateTimeField(auto_now_add=True, editable=False, null=True)
 
     objects = ChatQuerySet.as_manager()

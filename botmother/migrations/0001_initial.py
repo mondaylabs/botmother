@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('username', models.CharField(blank=True, max_length=255, null=True)),
                 ('first_name', models.CharField(blank=True, max_length=255, null=True)),
                 ('last_action', models.CharField(max_length=255, null=True)),
-                ('data', models.JSONField(null=True)),
+                ('data', models.TextField(null=True)),
                 ('last_activity', models.DateTimeField(auto_now_add=True, null=True)),
             ],
             options={

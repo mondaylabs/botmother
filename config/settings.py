@@ -151,6 +151,6 @@ COMPANY_NAME = 'Monday'
 BOT_TOKEN = ''
 
 try:
-    from .settings_dev1 import *
+    from .settings_dev import *
 except ImportError:
     pass

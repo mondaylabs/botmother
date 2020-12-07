@@ -105,7 +105,7 @@ class BotRouter:
             self.raw_message['text'] = callback['data']
 
             # ex: "product_1" to "1"
-            self.callback_data = callback['data'].split('_').pop()
+            self.callback_data = callback['data'].split('--').pop()
             self.callback_id = callback['id']
             self.chat = Chat.objects.create_chat(self.raw_message['chat'])
             self.message = Message.objects.create_message(self.raw_message, self.chat, type=self.type)

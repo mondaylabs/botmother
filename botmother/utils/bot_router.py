@@ -136,7 +136,7 @@ class BotRouter:
             return
 
         # command be equals to message text
-        if self.message.text == command:
+        if self.message.text == command or self.message.text.startswith(command + ' '):
             self.run(function, last_action, chat_type, edited, reply_type, extra)
 
     def starts_with(self, prefix, function, last_action=None, chat_type=None, edited=False, reply_type=None, extra={}):

@@ -143,7 +143,31 @@ def start(chat, *args, **kwargs):
 def start(chat, *args, **kwargs):
     chat.send_message('Hello, world')
 ```
-  
+В BotMother существует полезная константа CONTINUE. Как вы уже знаете, Python делает обход функций пока не найдет нужной, после чего выполнит его и выведет результат.  
+Константа CONTINUE может помочь продолжить обход, даже после выполнения указанной функции. Например:
+
+Без константы CONTINUE
+
+`#> Пользователь ввел "Привет"`
+```python
+from .handlers import *
+
+router.text('Привет', first_func)  # <-- Запуск функции без продолжения обхода , выведение результата и остановка.
+router.text(None, second_func) 
+```
+
+c константой CONTINUE
+
+`#> Пользователь ввел "Привет"`
+
+```python
+from .handlers import *
+
+router.text('Привет', hadlers.first_func)  # <--  Запуск функции c последующим продолжением обхода.
+router.text('Hello', hadlers.second_func)  
+router.text('Guten Tag', hadlers.third_func)
+router.starts_with('П', hadlers.fourth_func)  # <--- Второй запуск функции.
+```
 Рассмотрим модели `BotMother`:
 1.	`class AbstractChat(Model, TelegramAPI)` – как было указано выше, ваш `class Chat` наследуется от `AbstractChat`. В свою очередь, `AbstractChat` наследуется от `TelegramAPI`. 
 `AbstractChat` уже имеет следующие переменные: `chat_id, type, username, first_name, last_action, last_activity`. 

@@ -197,7 +197,7 @@ def keyboard_name():
 ```
 Клавиатура может принимать аргумент `resize_keyboard`, что сделает вашу клавиатуру красивее и стильнее:
 ```python
-def func_name():
+def keyboard_name():
     return {
         'keyboard': [
             [{'text': 'RU'}],
@@ -209,7 +209,7 @@ def func_name():
 
 Также, можно скрыть клавиатуру после одного касания добавлением аргумента `one_time_keyboard`. Но не следует прописывать этот аргумент, в случаях, когда одна клавиатура заменяется другой.
 ```python
-def func_name():
+def keyboard_name():
     return {
         'keyboard': [
             [{'text': 'RU'}],

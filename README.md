@@ -195,19 +195,9 @@ chat.send_message('Choose the language: ', reply_markup=keyboard_name())
 ```
 * `edit_message` - редактирует отправленное ботом сообщение. Рассмотрим на примере:
 ```python 
-
-def start(chat, redirect, **kwargs):
-    chat.send_message('Hi {name}'.format(name=chat.first_name))
-    kwargs['extra'] = {}
-    redirect(menu, **kwargs)
-
-
 def menu(chat, redirect, message, **kwargs):
     response = chat.send_message('I am a BotMother for creating telegram bots. Write smth ')
     chat.last_data = {'message_id': response.get('result', {}).get('message_id')}
-    kwargs['extra'] = {}
-    redirect(change, **kwargs)
-
 
 def change(chat, *args, **kwargs):
     chat.edit_message('Nice to meet ya!', message_id=chat.last_data.get('message_id'))

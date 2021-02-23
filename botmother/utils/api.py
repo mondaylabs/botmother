@@ -53,7 +53,7 @@ class TelegramAPI(object):
         })
     
     def edit_message(self, text, message_id, reply_markup=None, **kwargs):
-    return self.send('editMessageText', {
+        return self.send('editMessageText', {
         'text': text,
         'message_id': message_id,
         'reply_markup': reply_markup,

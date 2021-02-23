@@ -193,10 +193,23 @@ router.starts_with('П', hadlers.fourth_func)  # <--- Второй запуск 
 ```python
 chat.send_message('Choose the language: ', reply_markup=keyboard_name())
 ```
+* `edit_message` - редактирует отправленное ботом сообщение. Рассмотрим на примере:
+```python 
+def menu(chat, redirect, message, **kwargs):
+    response = chat.send_message('I am a BotMother for creating telegram bots. Write smth ')
+    chat.last_data = {'message_id': response.get('result', {}).get('message_id')}
+
+def change(chat, *args, **kwargs):
+    chat.edit_message('Nice to meet ya!', message_id=chat.last_data.get('message_id'))
+```
+1. Сначала необходимо внести данные сообщения в любую переменную (например `response`).
+2. Затем вытащить `message_id` сообщения для дальнейшего редактирования. 
+3. В обязательном порядке, нужно сохранить эти данные в `last_data`, в виде словаря.
+4. Главными атрибутами функции являются `text` и `message_id`. Поэтому, в следующей функции, в атрибуте `message_id`, необходимо вытащить с `last_data` данные      		`message_id` и прописать, как показано выше.
 * `send_location, send_photo` – соответственно отправляет пользователю местоположение или фото. 
 * `send_answer_pre_checkout_query` – Важная функция для онлайн-магазина. Проверяет правильность оплаты за продукт и отправляет сообщение, или же запускает какую-либо функцию после выполнения функции оплаты. 
 * `send_invoice` – отправляет «чек» или опять же запускает вашу функцию, уведомляющую клиента о успешном снятии денег.
-2.	А вот `class Message` не наследуется от `AbstractChat`, и имеет свои переменные: `id, date, chat, text, type`.
+5.	А вот `class Message` не наследуется от `AbstractChat`, и имеет свои переменные: `id, date, chat, text, type`.
 
 
 Рекомендации

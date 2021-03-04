@@ -104,8 +104,7 @@ class BotRouter:
             # save  callback data as message text ))))
             self.raw_message['text'] = callback['data']
 
-            # ex: "product_1" to "1"
-            self.callback_data = callback['data'].split('--').pop()
+            self.callback_data = json.loads(callback['data'].split('--').pop())
             self.callback_id = callback['id']
             self.chat = Chat.objects.create_chat(self.raw_message['chat'])
             self.message = Message.objects.create_message(self.raw_message, self.chat, type=self.type)
@@ -160,7 +159,7 @@ class BotRouter:
             return
 
         # prefix must be none or be start of message text
-        if prefix is None or self.message.text.startswith(prefix):
+        if prefix is None or self.message.text.startswith(prefix + '--'):
             self.run(function, last_action, chat_type, edited, reply_type, extra)
 
     def location(self, function, last_action=None, chat_type=None, edited=False, reply_type=None, extra={}):

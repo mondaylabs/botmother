@@ -13,10 +13,9 @@ def menu(chat, **kwargs):
     chat.last_data = {'message_id': response.get('result', {}).get('message_id')}
 
 
-def last(chat, callback_data, *args, **kwargs):
-    if callback_data:
-        chat.delete_message(message_id=chat.last_data.get('message_id'))
-        chat.send_message('Cool!' if callback_data.get('value') else 'Why so sad?')
+def answer(chat, callback_data, *args, **kwargs):
+    chat.delete_message(message_id=chat.last_data.get('message_id'))
+    chat.send_message('Cool!' if callback_data.get('value') else 'Why so sad?')
 
 
 def unknown(chat, *args, **kwargs):

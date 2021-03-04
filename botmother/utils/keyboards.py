@@ -1,15 +1,19 @@
 # inline keyboard
-def inline_keyboard(inline_keyboard_name):
-    return {'inline_keyboard': inline_keyboard_name, 'resize_keyboard': True}
+import json
+
+
+def inline_keyboard(callback_buttons):
+    return {'inline_keyboard': callback_buttons, 'resize_keyboard': True}
 
 
 def inline(text, data, key):
+    assert isinstance(data, dict)
     return {'text': text, 'callback_data': f"{key}--{json.dumps(data)}"}
 
 
 # ordinary keyboard
-def keyboard(keyboard_name):
-    return {'keyboard': keyboard_name, 'resize_keyboard': True}
+def keyboard(buttons):
+    return {'keyboard': buttons, 'resize_keyboard': True}
 
 
 def button(text, location=None, contact=None):

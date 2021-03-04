@@ -9,7 +9,7 @@ def start(chat, redirect, **kwargs):
 
 def menu(chat, **kwargs):
     chat.send_message('I am a BotMother for creating telegram bots')
-    response = chat.send_message('How are you?', reply_markup=inline_menu())
+    response = chat.send_message('How are you?', reply_markup=greeting())
     chat.last_data = {'message_id': response.get('result', {}).get('message_id')}
 
 

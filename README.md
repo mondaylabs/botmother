@@ -270,12 +270,21 @@ def start(chat, **kwargs):
     chat.send_message('I am a BotMother for creating telegram bots')
     chat.send_message('Как дела?', reply_markup=main_menu()))
 
-def answer(chat, message, *args, **kwargs):
+def answer_yes(chat, message, *args, **kwargs):
     message = message.text
     if message === 'Да':
-            chat.send_message('Отлично!')
-    else:
-            chat.send_message('Плохо!')
+    	chat.send_message('Отлично!')
+	
+def answer_no(chat, message, *args, **kwargs):
+    message = message.text
+    chat.send_message('Плохо!')
+```
+* Перейдите в `urls.py` и пропишите следующее:
+```python
+ def dispatch(router):
+    ...
+    router.text("Да", main.answer_yes)
+    router.text("Нет", main.answer_no)
 ```
 К сведению, можно назначить какую-либо кнопку отправителем вашего контакта или местоположения:
 ```python
@@ -283,8 +292,7 @@ from botmother.utils.keyboards import *
 
 def main_menu():
     return keyboard([
-        [button('Share the contact', contact=True), 
-        button('Share location', location=True)],
+    	[button('Share the contact', contact=True), button('Share location', location=True)],
         [button('Назад')]
     ])
 ```
@@ -293,7 +301,7 @@ def main_menu():
 ```python
 from botmother.utils.keyboards import *
 
-def inline_menu(*args, **kwargs):
+def inline_menu():
     return inline_keyboard([
         [inline('I am fine!', {'value': True}, 'is-chosen')],
         [inline('I am sad!', {'value': False}, 'is-chosen')]
@@ -304,7 +312,7 @@ def inline_menu(*args, **kwargs):
 
 `text` - содержимое кнопки.
 
-`data` - результат нажатия определенной кнопки в виде словаря.
+`data` - информация которая будет передаваться при нажатии на опеределенную кнопку.
 
 `key` - префикс необходимый как в `handlers.py` так и в `urls.py`. Далее будет показан наглядный пример.
 
@@ -314,22 +322,15 @@ from example.keyboards import *
     
 def start(chat, **kwargs):
     chat.send_message('I am a BotMother for creating telegram bots')
-    chat.send_message('How are you?', 
-    reply_markup=inline_menu('is-chosen'))) # key is required
+    chat.send_message('How are you?', reply_markup=inline_menu())) # key is required
 
 def menu(chat, callback_data, *args, **kwargs):
         chat.send_message('Cool!' if callback_data.get('value')  else 'Why so sad?') #data is required
 ```
 Несколько важных моментов:
-- Атрибут `key` должен быть прописан в атрибуте клавиатуры.
-- Функция-обработчик ответа клавиатуры должен принимать атрибут `callback_data`, который конвертирован в `JSON`-формат.
-- Для ответа вы должны взять именно `data`, который указали в `keyboards.py`.
+- Функция-обработчик ответа клавиатуры должен принимать атрибут `callback_data`, в который входит словарь `data`
 * Наконец, перейдите в `urls.py` приложения и добавьте нижеизложенное:
 ```python
-from botmother.webhook import webhook
-from django.urls import path
-from example.handlers import main
-
 def dispatch(router):
     ...
     router.callback('is-chosen', main.menu)
@@ -338,7 +339,7 @@ urlpatterns = [
     path('webhook', webhook(dispatch)),
 ]
 ```
-Как видно выше, первым атрибутом задан `key`, который выступает в роли `prefix`.
+Как видно выше, первым атрибутом задан `key`.
 
 4. В `urls.py`, в обязательном порядке, первой должна быть ссылка на `/start` функцию, ибо работа любого бота начинается с этой команды. 
 5. Для контроля последовательности выполнения функций, следует так же прописать в ссылках `urls.py` атрибут `last_action`. В ней может быть как 1 переменная, так и несколько, внесенных в свою очередь в список:

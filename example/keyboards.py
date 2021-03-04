@@ -8,7 +8,7 @@ def main_menu():
     ])
 
 
-def inline_menu():
+def greeting():
     return inline_keyboard([
         [inline('I am fine!', {'value': True}, 'is-chosen')],
         [inline('I am sad!', {'value': False}, 'is-chosen')]

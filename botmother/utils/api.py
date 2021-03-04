@@ -63,7 +63,6 @@ class TelegramAPI(object):
     def delete_message(self, message_id, **kwargs):
         return self.send('deleteMessage', {
             'message_id': message_id,
-            'reply_markup': reply_markup,
             **kwargs
         })
 

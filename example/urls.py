@@ -10,6 +10,6 @@ def dispatch(router):
 
 
 urlpatterns = [
-    path('webhook', webhook(dispatch)),
+    path('', webhook(dispatch)),
 ]
 

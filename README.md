@@ -83,7 +83,7 @@ def dispatch(router):
     router.command('/start', start),
 
 urlpatterns = [
-    path('webhook', webhook(dispatch)),
+    path('', webhook(dispatch)),
 ],
 ```
 Теперь, перейдите в корневой файл urls.py и выполните следующие действия:

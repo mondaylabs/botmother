@@ -13,4 +13,3 @@ def greeting():
         [inline('I am fine!', {'value': True}, 'is-chosen')],
         [inline('I am sad!', {'value': False}, 'is-chosen')]
     ])
-

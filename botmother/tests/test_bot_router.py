@@ -27,7 +27,7 @@ class BotRouterTest(TelegramTestCase):
     def test_text(self):
         route = BotRouter(self.load('text.json'))
         self.function_runned = False
-        route.text("⭐  Хиты продаж", self.function)
+        route.text("Bestsellers", self.function)
 
         self.assertTrue(self.function_runned)
         self.assertIn(route.type, "text")
@@ -35,7 +35,7 @@ class BotRouterTest(TelegramTestCase):
     def test_callback(self):
         route = BotRouter(self.load('callback.json'))
         self.function_runned = False
-        route.callback('first_order_product_count_', self.function)
+        route.callback('first_order_product_count', self.function)
 
         self.assertTrue(self.function_runned)
         self.assertIn(route.type, "callback")

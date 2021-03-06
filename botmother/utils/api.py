@@ -31,7 +31,7 @@ class TelegramAPI(object):
         if data.get('reply_markup'):
             data['reply_markup'] = json.dumps(data['reply_markup'])
         else:
-            del data['reply_markup']
+            data.pop('reply_markup', None)
 
         try:
             body = urlopen(Request(

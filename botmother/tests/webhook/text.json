@@ -1,19 +1,19 @@
 {
   "message": {
     "chat": {
-      "first_name": "Тестовый пользователь",
+      "first_name": "test user",
       "id": 38024172,
       "type": "private",
       "username": "Username"
     },
     "date": 1481703026,
     "from": {
-      "first_name": "Тестовый пользователь",
+      "first_name": "test user",
       "id": 38024172,
       "username": "Username"
     },
     "message_id": 4122,
-    "text": "⭐  Хиты продаж"
+    "text": "Bestsellers"
   },
   "update_id": 844780599
 }

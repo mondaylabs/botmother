@@ -1,7 +1,7 @@
 {
   "callback_query": {
     "chat_instance": "4830668401963449353",
-    "data": "first_order_product_count_1,3",
+    "data": "first_order_product_count--{\"product\": 1, \"count\": 3}",
     "from": {
       "first_name": "Test User",
       "id": 38024172,

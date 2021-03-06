@@ -31,7 +31,7 @@ class TelegramAPI(object):
         if data.get('reply_markup'):
             data['reply_markup'] = json.dumps(data['reply_markup'])
         else:
-            del data['reply_markup']
+            data.pop('reply_markup', None)
 
         try:
             body = urlopen(Request(
@@ -57,6 +57,12 @@ class TelegramAPI(object):
             'text': text,
             'message_id': message_id,
             'reply_markup': reply_markup,
+            **kwargs
+        })
+
+    def delete_message(self, message_id, **kwargs):
+        return self.send('deleteMessage', {
+            'message_id': message_id,
             **kwargs
         })
 

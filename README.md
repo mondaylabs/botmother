@@ -15,29 +15,39 @@
 1.	Python 3 
 2.	Django последней версии
 3.	Ngrok – можете установить и почитать документацию по [ссылке](https://ngrok.com/download) 
+4. 	Psycopg2 (2.8.6)
+
 
 Установка
 -----------
  1. Запустите команду:
- * http - `pip install git+https://github.com/mondaylabs/botmother.git@v0.4.0`
- * ssh  - `pip install git+ssh://git@github.com/mondaylabs/botmother.git@v0.4.0`
+ * http - `pip install git+https://github.com/mondaylabs/botmother.git@v1.0.0`
+ * ssh  - `pip install git+ssh://git@github.com/mondaylabs/botmother.git@v1.0.0`
 
 Библиотека установлена, идем дальше.
 
-2. Откройте файл `settings.py` (она находится в главной папке вашего проекта), добавьте в `INSTALLED_APPS` название библиотеки и вашего приложения:
+2. Откройте файл `settings.py` и добавьте в `INSTALLED_APPS` название библиотеки и вашего приложения:
 ```python
 INSTALLED_APPS = [
     ...
     'botmother',
+    'имя_вашего_приложения'
 ]
 ```
 
-3. Создайте своего бота помощью [BotFather]( @BotFather). Скопируйте токен созданного бота и задайте его в переменной `BOT_TOKEN` в том же `settings.py`: 
+3. Создайте нового бота с помощью [BotFather]( @BotFather). Скопируйте токен созданного бота и задайте его в переменной `BOT_TOKEN` в том же `settings.py`: 
 ```python
 BOT_TOKEN = '1619688226:AAFa1v1nPZXWG97wFdu4W**************'
 ```
+4. Также, добавьте следующее:
 
-4. Далее, для того чтобы ваш бот правильно работал, вам следует создать модель `Chat` в `models.py`. 
+```python
+	import sys
+	...	
+	BOTMOTHER_CHAT_MODEL = 'botmother.Chat'
+	TESTING = ('test' == sys.argv[1]) if sys.argv else False
+```
+5.  Далее, для того, чтобы ваш бот правильно работал, вам следует создать модель `Chat` в `models.py`. 
 ```python
 from botmother.models import AbstractChat
 
@@ -45,34 +55,29 @@ class Chat(AbstractChat):
     class Meta(AbstractChat.Meta):
         db_table = '<имя_вашего_приложения>_chats'
 ```
-Еще пару очень важных моментов. `Chat` модель должна наследоваться от `AbstractChat` класса, та в свою очередь наследуется от `TelegramAPI` класса.
-`AbstractChat`  уже имеет следующие переменные, такие как:  `chat_id, type, username, first_name, last_action, data, last_activity`.
-Как видно выше, `AbstractChat` класс уже имеет достаточное количество переменных, которые могут быть полезны. Их не обязательно прописывать в своих моделях. 
-Как показано выше, вам следует импортировать `AbstractChat` и прописать его в наследство созданной вами модели.
+Еще пару очень важных моментов:
 
-5. Далее перейдите в `settings.py` и добавьте то, что показано ниже:
-```python
-	import sys
-	...	
-	BOTMOTHER_CHAT_MODEL = 'botmother.Chat'
-	TESTING = ('test' == sys.argv[1]) if sys.argv else False
-```
+`Chat` модель должна наследоваться от `AbstractChat` класса, та в свою очередь наследуется от `TelegramAPI` класса.
+`AbstractChat`  уже имеет следующие переменные, такие как:  `chat_id, type, username, first_name, last_action, data, last_activity`.
+
+Как видно выше, `AbstractChat` класс уже имеет достаточное количество переменных, которые могут быть полезны. Их не обязательно прописывать в своих моделях. 
+Вам просто нужно импортировать `AbstractChat` и прописать его в наследство созданной вами модели.
 
 6. Перейдя в командную строку, пропишите команду `python manage.py makemigrations` и `python manage.py migrate`.
-Далее, вы увидите:
-```
-...
-Running migrations:
-...
-Applying <your_app_name>.0001_initial... OK
-```
-  После этого, просто поменяйте `BOTMOTHER_CHAT_MODEL = 'botmother.Chat'` на `BOTMOTHER_CHAT_MODEL = '<название_вашего_приложения>.Chat'`
+После этого, просто поменяйте `BOTMOTHER_CHAT_MODEL = 'botmother.Chat'` на `BOTMOTHER_CHAT_MODEL = '<название_вашего_приложения>.Chat'`
 
+7. Создайте файл `handlers.py` в папке приложения и напишите свою первую функцию `start`:
+```python
+def start(chat, *args, **kwargs):
+    chat.send_message('Hello, world!')
+```
 
-7. Создайте файл `urls.py` в папке вашего приложения так, чтобы у вас получился путь `<имя_вашего_проекта >/<имя_вашего_приложения>/urls.py`, и добавьте функцию `dispatch`, как показано ниже:
+8. Создайте файл `urls.py` в папке вашего приложения так, чтобы у вас получился путь `<имя_вашего_проекта >/<имя_вашего_приложения>/urls.py`, и добавьте функцию `dispatch()`, как показано ниже:
 ```python
 from botmother.webhook import webhook
 from django.urls import path
+from example.handlers.main import *
+
 
 def dispatch(router):
     router.command('/start', start),
@@ -81,8 +86,16 @@ urlpatterns = [
     path('', webhook(dispatch)),
 ],
 ```
+Теперь, перейдите в корневой файл urls.py и выполните следующие действия:
+```python
+urlpatterns = [
+    ...
+    path('example/', include(('example.urls', 'example'), namespace='example')),
+]
+```
+Вместо `example` вы должны подставить имя своего приложения.
 
-8.	Так же добавьте `ngrok` в `ALLOWED_HOSTS` следующим образом:
+9.	Так же добавьте `ngrok` в `ALLOWED_HOSTS` следующим образом:
 ```python
 ALLOWED_HOSTS = (
     ...
@@ -90,29 +103,24 @@ ALLOWED_HOSTS = (
 )
 ```
 
-9.	Запустите ngrok командой `ngrok http 8000`.
-Важно указать, где находится файл `ngrok.exe` в командной строке. Затем, скопируйте появившуюся ссылку, показанную ниже:
+10.	Запустите ngrok командой `ngrok http 8000`.
+Но прежде, если у вас Windows, то укажите где находится файл `ngrok.exe` в командной строке. Затем, скопируйте появившуюся ссылку, показанную ниже:
 
     `Forwarding                    https://82691332ba1f.ngrok.io -> http://localhost:8000`
 
-10.	Откройте еще одну командную строку, пропишите команду:
+11. Добавив `/example/webhook` в конец ссылки, запустите `webhook` командой:
 
-    `py manage.py setwebhook <скопированная_ссылка>` 
+    `py manage.py setwebhook https://82691332ba1f.ngrok.io/example/webhook`
 
-11.	Создайте файл `handlers.py` в папке приложения и напишите свою первую функцию `start`, ту, что добавили в функцию `dispatch` в `urls.py`:
-```python
-def start(chat, *args, **kwargs):
-    chat.send_message('Hello, world!')
-```
-12.	Запустите бота командой `py manage.py runserver`
+12.	Запустите бота командой `py manage.py runserver`.
 
 13.	Проверьте работоспособность своего бота!
 
 
 Функции bot_router.py
 -----------
-Еще один важный момент, который поможет лучше понять, как работает BotMother это функции в корневом файле bot_router.py (можете почитать по [ссылке](https://github.com/mondaylabs/botmother/blob/master/botmother/utils/bot_router.py)).
-Все функции, в обязательном порядке, принимают аргумент function в виде обработчиков.
+Еще один важный момент, который поможет лучше понять, как работает `BotMother` это функции в корневом файле `bot_router.py` (можете почитать по [ссылке](https://github.com/mondaylabs/botmother/blob/master/botmother/utils/bot_router.py)).
+Все функции, в обязательном порядке, принимают аргумент `function` в виде обработчиков.
 Сейчас я поочередно опишу каждую функцию:
 * `сommand`   - Обязательный аргумент: `command,  function`. Нужна для обработки команд бота, таких как `/start`. Другие типы сообщений эта команда не принимает.
 * `starts_with` - Обязательный аргумент: `prefix, function`. Направляет веб-перехватчик текстового типа, который начинается с заданного префикса.
@@ -132,7 +140,7 @@ def start(chat, *args, **kwargs):
 
 
 
-Инструкция по handlers.py и models.py. 
+Инструкция по `handlers.py` и `models.py`. 
 Описание самых важных функций
 -----------
 Хендлеры – это функция, которая вызывается какой-либо программной системой в ответ на наступление какого-либо события. Их еще называют обработчиками. Следственно, можно понять, что они и будут выполнять всю работу вашего бота. Но, что бы они начали работать, нужно ознакомиться с функциями `BotMother`, которые помогут эти обработчики правильно прописать и связать.
@@ -144,8 +152,8 @@ def start(chat, *args, **kwargs):
 * `redirect` –  перенаправит на другую функцию после выполнения предыдущей. Обязательно пропишите ее в качестве аргумента в вашей функции. Далее укажите в `redirect` в качестве аргумента функцию, на которую вы хотите перейти.
 * `location`  - нужен для обработки локации, отправленной клиентом.
 * `phone` -  нужен для обработки контакта.
-* `callback_data` – обязательный атрибут при inline-кнопках. После нажатия, бот должен получить запрос на обработку данных и выполнения
-соответствующей функции. Этот запрос должен содержать callback_data. Он может быть невиден клиенту, но обязателен к внесению.
+* `callback_data` – обязательный атрибут при `inline`-клавиатурах. После нажатия, бот должен получить запрос на обработку данных и выполнения
+соответствующей функции. Этот запрос должен содержать `callback_data`. Он может быть не виден клиенту, но обязателен к внесению.
 * `pre_checkout_query` – полезный атрибут для online-магазинов. Выполнит указанные действия, прописанные в этом атрибуте.
 * `extra` – полезный атрибут при разграничении схожих функций.
 
@@ -194,6 +202,7 @@ router.starts_with('П', hadlers.fourth_func)  # <--- Второй запуск 
 chat.send_message('Choose the language: ', reply_markup=keyboard_name())
 ```
 * `edit_message` - редактирует отправленное ботом сообщение. Рассмотрим на примере:
+
 ```python 
 def menu(chat, redirect, message, **kwargs):
     response = chat.send_message('I am a BotMother for creating telegram bots. Write smth ')
@@ -209,8 +218,17 @@ def change(chat, *args, **kwargs):
 * `send_location, send_photo` – соответственно отправляет пользователю местоположение или фото. 
 * `send_answer_pre_checkout_query` – Важная функция для онлайн-магазина. Проверяет правильность оплаты за продукт и отправляет сообщение, или же запускает какую-либо функцию после выполнения функции оплаты. 
 * `send_invoice` – отправляет «чек» или опять же запускает вашу функцию, уведомляющую клиента о успешном снятии денег.
-5.	А вот `class Message` не наследуется от `AbstractChat`, и имеет свои переменные: `id, date, chat, text, type`.
+* `delete_message` - удаляет выбранное сообщение. Пример:
+```python
+def start(chat, redirect, message, **kwargs):
+    response = chat.send_message('Hello world!')
+    chat.last_data = {'message_id': response.get('result', {}).get('message_id')}
 
+def delete(chat, message, *args, **kwargs):
+    if message:
+        chat.delete_message( message_id=chat.last_data.get('message_id'))
+```
+Как вы могли заметить `delete_message` схож с `edit_message` тем, что требует `message_id` . Единственная разница это отсутствие обязательного атрибута `text`.
 
 Рекомендации
 -----------
@@ -230,52 +248,107 @@ class Chat(AbstractChat):
 ...
 BOTMOTHER_CHAT_MODEL = '< имя_вашего_приложения>.Chat'
 ```
-2.	Продолжая тему создания клавиатуры, хочется добавить, что необходимо, в первую очередь, эту клавиатуру создать. Сейчас будет пошагово разобрано, как это нужно реализовать:
+2.	Продолжая тему создания клавиатуры, хочется добавить, что необходимо, в первую очередь, эту клавиатуру создать. Сейчас будет пошагово разобрано, как можно создать простую клавиатуру:
 * Создаем файл keyboards.py в папке приложения. 
-* Создаем функцию, которая не принимает никаких аргументов. 
-* Далее выполняем показанные ниже действия:
+* Далее копируем и вставляем нижепоказанный код:
 ```python
-def keyboard_name():
-    return {
-        'keyboard': [
-            [{'text': '<your_text>'}],
-            [{'text': '<your_text>'}]
-        ],
-    }
-```
-Клавиатура может принимать аргумент `resize_keyboard`, что сделает вашу клавиатуру красивее и стильнее:
-```python
-def keyboard_name():
-    return {
-        'keyboard': [
-            [{'text': 'RU'}],
-            [{'text': 'US'}]
-        ],
-        'resize_keyboard': True,
-    }
-```
+from botmother.utils.keyboards import *
 
-Также, можно скрыть клавиатуру после одного касания добавлением аргумента `one_time_keyboard`. Но не следует прописывать этот аргумент, в случаях, когда одна клавиатура заменяется другой.
-```python
-def keyboard_name():
-    return {
-        'keyboard': [
-            [{'text': 'RU'}],
-            [{'text': 'US'}]
-        ],
-        'resize_keyboard': True,
-        'one_time_keyboard': True,
-    }
+def main_menu():
+    return keyboard([
+        [button('Хорошо'), button('Не очень!')],
+        [button('Назад')]
+    ])
 ```
+`Botmother` уже имеет встроенные функции по созданию клавиатуры -  `keyboard()` и кнопок - `button()`. Вам остается только прописать внутренний текст, так как это обязательный атрибут.
 
-3. В `urls.py`, в обязательном порядке, первой должна быть ссылка на `/start` функцию, ибо работа любого бота начинается с этой команды. 
-4. Для контроля последовательности выполнения функций, следует так же прописать в ссылках `urls.py` атрибут `last_action`. В ней может быть как 1 переменная, так и несколько, внесенных в свою очередь в список:
+* Напишите функцию в `handlers.py` для обработки ответа клавиатуры :
+```python
+from example.keyboards import *
+    
+def start(chat, **kwargs):
+    chat.send_message('I am a BotMother for creating telegram bots')
+    chat.send_message('Как дела?', reply_markup=main_menu()))
+
+def answer_yes(chat, message, *args, **kwargs):
+    message = message.text
+    if message === 'Да':
+    	chat.send_message('Отлично!')
+	
+def answer_no(chat, message, *args, **kwargs):
+    message = message.text
+    chat.send_message('Плохо!')
+```
+* Перейдите в `urls.py` и пропишите следующее:
+```python
+ def dispatch(router):
+    ...
+    router.text("Да", main.answer_yes)
+    router.text("Нет", main.answer_no)
+```
+К сведению, можно назначить какую-либо кнопку отправителем вашего контакта или местоположения:
+```python
+from botmother.utils.keyboards import *
+
+def main_menu():
+    return keyboard([
+    	[button('Share the contact', contact=True), button('Share location', location=True)],
+        [button('Назад')]
+    ])
+```
+3. Создание `inline`-клавиатуры происходит немного иначе:
+* Перейдите в `keyboards.py` и добавьте следующее:
+```python
+from botmother.utils.keyboards import *
+
+def inline_menu():
+    return inline_keyboard([
+        [inline('I am fine!', {'value': True}, 'is-chosen')],
+        [inline('I am sad!', {'value': False}, 'is-chosen')]
+    ])
+```
+Как вы, наверно, уже знаете, `inline`-клавиатура возвращает `callback-data`, что немного отличает ее от простой клавиатуры. 
+Как показано выше, `inline_keyboard` на входе принимает параметр `callback_buttons`. Соответственно, необходимо прописать их листами внутри листа (`arrays in array`). Сама функция `inline()` схожа с `button()`, но принимает 3 обязательных параметра: `text`, `data`, `key`:
+
+`text` - содержимое кнопки.
+
+`data` - информация которая будет передаваться при нажатии на опеределенную кнопку.
+
+`key` - префикс необходимый как в `handlers.py` так и в `urls.py`. Далее будет показан наглядный пример.
+
+* Перейдите в `handlers.py`:
+```python
+from example.keyboards import *
+    
+def start(chat, **kwargs):
+    chat.send_message('I am a BotMother for creating telegram bots')
+    chat.send_message('How are you?', reply_markup=inline_menu())) # key is required
+
+def menu(chat, callback_data, *args, **kwargs):
+        chat.send_message('Cool!' if callback_data.get('value')  else 'Why so sad?') #data is required
+```
+Несколько важных моментов:
+- Функция-обработчик ответа клавиатуры должен принимать атрибут `callback_data`, в который входит словарь `data`
+* Наконец, перейдите в `urls.py` приложения и добавьте нижеизложенное:
+```python
+def dispatch(router):
+    ...
+    router.callback('is-chosen', main.menu)
+
+urlpatterns = [
+    path('webhook', webhook(dispatch)),
+]
+```
+Как видно выше, первым атрибутом задан `key`.
+
+4. В `urls.py`, в обязательном порядке, первой должна быть ссылка на `/start` функцию, ибо работа любого бота начинается с этой команды. 
+5. Для контроля последовательности выполнения функций, следует так же прописать в ссылках `urls.py` атрибут `last_action`. В ней может быть как 1 переменная, так и несколько, внесенных в свою очередь в список:
 ```python
 router.command('/<your_command>', <func4>, last_action=[<func1>, <func2>, <func3>, <func4>])
 ```
 Это может предотвратить случаи неверной последовательности запуска обработчиков.
 
-5.	Немаловажный момент это сохранение поэтапности функций. Если вы пишете, например, бота-опросника, то верным решением будет сначала прописывать сам вопрос, а затем, в следующей функции, его обрабатывать  и продолжить по цепочке. Например:
+6.	Немаловажный момент это сохранение поэтапности функций. Если вы пишете, например, бота-опросника, то верным решением будет сначала прописывать сам вопрос, а затем, в следующей функции, его обрабатывать  и продолжить по цепочке. Например:
 ```python
 def start(chat, *args, **kwargs):
     chat.send_message(‘What is your name?’)
@@ -290,7 +363,7 @@ def ask_age(chat, *args, **kwargs ):
     #ловите запрос от второй функции и обрабатываете
     chat.send_message(f‘Oh, {name}. Welldone! You are already {age} years old!’)
 ```
-6. Кроме как использования предустановленных команд, вы можете добавить свои собственные. Польза от этого заключается в том, что у вас появится возможность взаимодействовать с приложениям прямо из вашей командной строки. 
+7. Кроме как использования предустановленных команд, вы можете добавить свои собственные. Польза от этого заключается в том, что у вас появится возможность взаимодействовать с приложениям прямо из вашей командной строки. 
  Итак, давайте создадим команду для бота-синоптика, который спросит у зарегистрированных пользваотелей, не хоят ли они узнать погоду:
 * Внутри папки своего приложения создайте Python-дерикторию "management", а внутри него "commands".
 В commands создайте питоновский файл и дайте ему любое имя. У вас должен получится следующий путь:

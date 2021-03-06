@@ -1,6 +1,7 @@
 
 import json
 
+
 # ordinary keyboard
 def keyboard(buttons):
     return {'keyboard': buttons, 'resize_keyboard': True}
@@ -16,6 +17,7 @@ def button(text, location=None, contact=None):
         data['request_contact'] = True
 
     return data
+
 
 # inline keyboard
 def inline_keyboard(callback_buttons):

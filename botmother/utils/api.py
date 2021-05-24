@@ -89,6 +89,13 @@ class TelegramAPI(object):
             **kwargs
         })
 
+    def send_document(self, document, reply_markup=None, **kwargs):
+        return self.send('sendDocument', {
+            'document': document,
+            'reply_markup': reply_markup,
+            **kwargs
+        })
+
     def send_answer_pre_checkout_query(self, id, ok, **kwargs):
         return self.send('answerPreCheckoutQuery', {
             'ok': ok,

@@ -89,10 +89,9 @@ class TelegramAPI(object):
             **kwargs
         })
 
-    def send_document(self, document, data, reply_markup=None, **kwargs):
+    def send_document(self, document, reply_markup=None, **kwargs):
         return self.send('sendDocument', {
             'document': document,
-            'data': data,
             'reply_markup': reply_markup,
             **kwargs
         })

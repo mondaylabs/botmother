@@ -1,7 +1,8 @@
+from io import TextIOWrapper, BufferedReader
 from django.conf import settings
 import json
-from urllib.error import HTTPError
-from urllib.request import urlopen, Request
+import requests
+from requests import HTTPError
 
 _test_requests = []
 
@@ -21,7 +22,7 @@ class TelegramAPI(object):
         if chat_id:
             self.chat_id = chat_id
 
-    def send(self, method, data):
+    def send(self, method, data, files=None):
         if settings.TESTING:
             _test_requests.append({'method': method, 'data': data})
             return
@@ -34,16 +35,18 @@ class TelegramAPI(object):
             data.pop('reply_markup', None)
 
         try:
-            body = urlopen(Request(
-                f'https://api.telegram.org/bot{self.token}/{method}',
-                json.dumps(data).encode(),
-                headers={'Accept': 'application/json', 'Content-Type': 'application/json'},
-            )).read().decode()
+            response = requests.post(
+                f'https://api.telegram.org/bot{self.token}/{method}?',
+                params=data,
+                files=files or {}
+            )
+            response.raise_for_status()
+            body = response.json()
         except HTTPError as e:
-            body = e.read().decode()
+            body = e.response.json()
             print(body)
 
-        return json.loads(body)
+        return body
 
     def send_message(self, text, reply_markup=None, **kwargs):
         return self.send('sendMessage', {
@@ -90,11 +93,14 @@ class TelegramAPI(object):
         })
 
     def send_document(self, document, reply_markup=None, **kwargs):
-        return self.send('sendDocument', {
-            'document': document,
-            'reply_markup': reply_markup,
-            **kwargs
-        })
+        files = None
+        data = {'reply_markup': reply_markup, **kwargs}
+        if type(document) in (TextIOWrapper, BufferedReader):
+            files = {'document': document}
+        else:
+            data['document'] = document
+
+        return self.send('sendDocument', data, files=files)
 
     def send_answer_pre_checkout_query(self, id, ok, **kwargs):
         return self.send('answerPreCheckoutQuery', {

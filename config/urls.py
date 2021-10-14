@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('example', include(('example.urls', 'example'), namespace='example')),
+    path('example/', include(('example.urls', 'example'), namespace='example')),
 ]
 
 if settings.DEBUG:

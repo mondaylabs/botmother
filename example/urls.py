@@ -10,5 +10,5 @@ def dispatch(router):
 
 
 urlpatterns = [
-    path('', webhook(dispatch)),
+    path('webhook', webhook(dispatch)),
 ]

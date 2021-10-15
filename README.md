@@ -1,3 +1,4 @@
+
 # Телеграм-бот на Python
 
 
@@ -21,8 +22,8 @@
 Установка
 -----------
  1. Запустите команду:
- * http - `pip install git+https://github.com/mondaylabs/botmother.git@v1.0.2`
- * ssh  - `pip install git+ssh://git@github.com/mondaylabs/botmother.git@v1.0.2`
+ * http - `pip install git+https://github.com/mondaylabs/botmother.git@v1.1.0`
+ * ssh  - `pip install git+ssh://git@github.com/mondaylabs/botmother.git@v1.1.0`
 
 Библиотека установлена, идем дальше.
 
@@ -84,7 +85,7 @@ def dispatch(router):
 
 urlpatterns = [
     path('', webhook(dispatch)),
-],
+]
 ```
 Теперь, перейдите в корневой файл urls.py и выполните следующие действия:
 ```python
@@ -363,7 +364,22 @@ def ask_age(chat, *args, **kwargs ):
     #ловите запрос от второй функции и обрабатываете
     chat.send_message(f‘Oh, {name}. Welldone! You are already {age} years old!’)
 ```
-7. Кроме как использования предустановленных команд, вы можете добавить свои собственные. Польза от этого заключается в том, что у вас появится возможность взаимодействовать с приложениям прямо из вашей командной строки. 
+
+7. Чтобы отправить документы используйте функцию send_document. Например:
+```python
+chat.send_document(document)
+```
+Где переменный `document` либо URL (например `http://site.com/files.pdf`) к файлу (только GIF, PDF, ZIP) либо сам файл (например `open('file.xls')`)
+Примеры:
+```python
+# передаём URL
+chat.send_document(f'{BACKEND_DOMAIN}/files/test.pdf')
+
+# передаём файл
+chat.send_document(open(f'{config.BASE_DIR}/files/test.xlsx', 'rb'))
+```
+
+8. Кроме как использования предустановленных команд, вы можете добавить свои собственные. Польза от этого заключается в том, что у вас появится возможность взаимодействовать с приложениям прямо из вашей командной строки. 
  Итак, давайте создадим команду для бота-синоптика, который спросит у зарегистрированных пользваотелей, не хоят ли они узнать погоду:
 * Внутри папки своего приложения создайте Python-дерикторию "management", а внутри него "commands".
 В commands создайте питоновский файл и дайте ему любое имя. У вас должен получится следующий путь:

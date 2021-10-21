@@ -132,3 +132,9 @@ class TelegramAPI(object):
             'reply_markup': reply_markup,
             **kwargs
         })
+
+    def send_chat_action(self, action, **kwargs):
+        return self.send('sendChatAction', {
+            'action': action,
+            **kwargs
+        })

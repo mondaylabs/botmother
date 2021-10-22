@@ -19,4 +19,4 @@ def answer(chat, callback_data, *args, **kwargs):
 
 
 def unknown(chat, *args, **kwargs):
-    chat.send_message('{name}, I do not understand you!'.format(name=chat.first_name))
+    chat.send_message(f'{chat.first_name}, I do not understand you!')

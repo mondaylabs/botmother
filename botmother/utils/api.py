@@ -1,4 +1,5 @@
 from io import TextIOWrapper, BufferedReader
+
 from django.conf import settings
 import json
 import requests
@@ -130,5 +131,11 @@ class TelegramAPI(object):
             'prices': json.dumps(prices),
             'payload': payload,
             'reply_markup': reply_markup,
+            **kwargs
+        })
+
+    def send_chat_action(self, action='typing', **kwargs):
+        return self.send('sendChatAction', {
+            'action': action,
             **kwargs
         })

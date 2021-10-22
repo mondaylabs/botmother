@@ -1,5 +1,4 @@
 from io import TextIOWrapper, BufferedReader
-from typing import Literal
 
 from django.conf import settings
 import json

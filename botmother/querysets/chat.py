@@ -14,3 +14,6 @@ class ChatQuerySet(QuerySet):
             chat = self.create(chat_id=data['id'], type=data['type'], username=username, first_name=first_name)
 
         return chat
+
+    def active(self):
+        return self.filter(stopped_at=None)

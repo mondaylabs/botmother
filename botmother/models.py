@@ -1,4 +1,7 @@
+from pprint import pprint
+
 from django.conf import settings
+from django.utils import timezone
 
 from botmother.querysets.message import MessageQuerySet
 from botmother.querysets.chat import ChatQuerySet
@@ -24,8 +27,16 @@ class AbstractChat(Model, TelegramAPI):
     last_action = models.CharField(max_length=255, null=True)
     data = models.TextField(null=True)
     last_activity = models.DateTimeField(auto_now_add=True, editable=False, null=True)
+    stopped_at = models.DateTimeField(null=True, blank=True)
 
     objects = ChatQuerySet.as_manager()
+
+    def send(self, *args, **kwargs):
+        response = super().send(*args, **kwargs)
+        if response.get('error_code') == 403:
+            self.stopped_at = timezone.now()
+            self.save()
+        return response
 
     @property
     def last_data(self):

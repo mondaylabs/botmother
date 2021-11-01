@@ -18,6 +18,7 @@ class ChatAdmin(admin.ModelAdmin):
         'chat_id',
         'type',
         'username',
+        'stopped_at',
     )
 
 

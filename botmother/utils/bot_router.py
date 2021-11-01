@@ -231,6 +231,7 @@ class BotRouter:
 
         self.chat.last_action = action_name(self.redirect_action or function)
         self.chat.last_activity = timezone.now()
+        self.chat.stopped_at = None
         self.chat.save()
 
     def _redirect(self, action, **kwargs):

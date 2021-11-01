@@ -42,6 +42,7 @@ class BotRouter:
     is_edit = False
     redirect_action = None
     pre_checkout_query = None
+    unknown_type = False
 
     def __init__(self, request_body):
         """ Parse and set type of botmother webhook request """
@@ -65,6 +66,9 @@ class BotRouter:
         elif 'pre_checkout_query' in update:
             self._init_message(update['pre_checkout_query'])
             self.chat = Chat.objects.get(chat_id=self.pre_checkout_query.get('from', {}).get('id'))
+        else:
+            self.unknown_type = True
+            print("BotMother: Warning! unknown type of update!")
 
     def _init_message(self, message):
         self.raw_message = message
@@ -125,6 +129,8 @@ class BotRouter:
         elif 'new_chat_photo' in message:
             return Message.TYPE_NEW_CHAT_PHOTO
         elif 'pre_checkout_query' in message:
+            return Message.TYPE_PRE_CHECKOUT_QUERY
+        elif 'new_chat_member' in message:
             return Message.TYPE_PRE_CHECKOUT_QUERY
         else:
             return None
@@ -189,7 +195,7 @@ class BotRouter:
     def run(self, function, last_action=None, chat_type=None, edited=False, reply_type=None, extra={}):
         """ Runs handler function """
 
-        if self.runned:
+        if self.runned or self.unknown_type:
             return
 
         if self.is_edit and not edited:

@@ -23,12 +23,12 @@ class TelegramAPI(object):
         if chat_id:
             self.chat_id = chat_id
 
-    def send(self, method, data, files=None):
+    def send(self, method, data={}, files=None):
         if settings.TESTING:
             _test_requests.append({'method': method, 'data': data})
             return
 
-        data.setdefault('chat_id', self.chat_id)
+        data.setdefault('chat_id', self.chat_id) if data else None
 
         if data.get('reply_markup'):
             data['reply_markup'] = json.dumps(data['reply_markup'])
@@ -139,3 +139,6 @@ class TelegramAPI(object):
             'action': action,
             **kwargs
         })
+
+    def get_updates(self, **kwargs):
+        return self.send('getUpdates')

@@ -87,6 +87,9 @@ DATABASES = {
 }
 
 BOTMOTHER_CHAT_MODEL = 'botmother.Chat'
+BOT_TOKEN = ''
+BOT_POOLING_DISPATCHER = 'telegram.urls.dispatch'
+BOT_POOLING_INTERVAL = 5
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -147,8 +150,6 @@ REST_FRAMEWORK = {
 FRONTEND_DOMAIN = os.environ.get('FRONTEND_DOMAIN', 'https://mondaylabs.tech')
 BACKEND_DOMAIN = os.environ.get('BACKEND_DOMAIN', 'https://mondaylabs.tech')
 COMPANY_NAME = 'Monday'
-
-BOT_TOKEN = ''
 
 try:
     from .settings_dev import *

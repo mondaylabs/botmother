@@ -1,15 +1,18 @@
 import json
 import time
+import importlib
+
 from django.conf import settings
 from django.core.management.base import BaseCommand
-
 from botmother.utils.api import TelegramAPI
 from botmother.utils.bot_router import BotRouter
-from example.urls import dispatch
 
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
+        module_name, func_name = settings.BOT_POOLING_DISPATCHER.rsplit('.', 1)
+        module = importlib.import_module(module_name)
+        dispatch = getattr(module, func_name)
         telegram = TelegramAPI(settings.BOT_TOKEN)
         updates_id = []
 

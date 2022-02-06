@@ -88,7 +88,7 @@ DATABASES = {
 
 BOTMOTHER_CHAT_MODEL = 'botmother.Chat'
 BOT_TOKEN = ''
-BOT_POOLING_DISPATCHER = 'telegram.urls.dispatch'
+BOT_POOLING_DISPATCHER = 'example.urls.dispatch'
 BOT_POOLING_INTERVAL = 5
 
 # Password validation

@@ -28,7 +28,8 @@ class TelegramAPI(object):
             _test_requests.append({'method': method, 'data': data})
             return
 
-        data.setdefault('chat_id', self.chat_id) if data else None
+        if data:
+            data.setdefault('chat_id', self.chat_id)
 
         if data.get('reply_markup'):
             data['reply_markup'] = json.dumps(data['reply_markup'])

@@ -89,7 +89,7 @@ DATABASES = {
 BOTMOTHER_CHAT_MODEL = 'botmother.Chat'
 BOT_TOKEN = ''
 BOT_POOLING_DISPATCHER = 'example.urls.dispatch'
-BOT_POOLING_INTERVAL = 5
+BOT_POOLING_INTERVAL = 3
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

@@ -20,15 +20,16 @@ def clear_test_requests():
 class TelegramAPI(object):
     def __init__(self, token=None, chat_id=None):
         self.token = token
+
         if chat_id:
             self.chat_id = chat_id
 
-    def send(self, method, data={}, files=None):
+    def send(self, method, data=None, files=None):
         if settings.TESTING:
             _test_requests.append({'method': method, 'data': data})
             return
 
-        if data:
+        if data and hasattr(self, 'chat_id'):
             data.setdefault('chat_id', self.chat_id)
 
         if data.get('reply_markup'):
@@ -142,4 +143,6 @@ class TelegramAPI(object):
         })
 
     def get_updates(self, **kwargs):
-        return self.send('getUpdates')
+        return self.send('getUpdates', {
+            **kwargs
+        })

@@ -14,18 +14,17 @@ class Command(BaseCommand):
         module = importlib.import_module(module_name)
         dispatch = getattr(module, func_name)
         telegram = TelegramAPI(settings.BOT_TOKEN)
-        updates_id = []
+        last_update = 0 or -1
 
         while True:
-            updates = telegram.get_updates()
+            time.sleep(settings.BOT_POOLING_INTERVAL or 3)
+            updates = telegram.get_updates(offset=last_update)
 
+            if not updates.get('result'):
+                continue
+
+            last_update = updates['result'][-1]['update_id'] + 1
             for update in updates['result']:
-                if len(updates_id) == 0:
-                    updates_id.append(update['update_id'])
+                router = BotRouter(json.dumps(update))
+                dispatch(router)
 
-                if update['update_id'] not in updates_id:
-                    updates_id.append(update['update_id'])
-                    router = BotRouter(json.dumps(update))
-                    dispatch(router)
-
-            time.sleep(settings.BOT_POOLING_INTERVAL or 5)

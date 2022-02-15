@@ -27,4 +27,3 @@ class Command(BaseCommand):
             for update in updates['result']:
                 router = BotRouter(json.dumps(update))
                 dispatch(router)
-

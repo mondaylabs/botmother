@@ -16,14 +16,17 @@ class Command(BaseCommand):
         telegram = TelegramAPI(settings.BOT_TOKEN)
         last_update = 0 or -1
 
-        while True:
-            time.sleep(settings.BOT_POOLING_INTERVAL or 3)
-            updates = telegram.get_updates(offset=last_update)
+        try:
+            while True:
+                time.sleep(settings.BOT_POOLING_INTERVAL or 3)
+                updates = telegram.get_updates(offset=last_update)
 
-            if not updates.get('result'):
-                continue
+                if not updates.get('result'):
+                    continue
 
-            last_update = updates['result'][-1]['update_id'] + 1
-            for update in updates['result']:
-                router = BotRouter(json.dumps(update))
-                dispatch(router)
+                last_update = updates['result'][-1]['update_id'] + 1
+                for update in updates['result']:
+                    router = BotRouter(json.dumps(update))
+                    dispatch(router)
+        except KeyboardInterrupt:
+            print('===>>>  You stopped polling <<<===')

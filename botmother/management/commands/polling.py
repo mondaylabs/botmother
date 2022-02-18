@@ -14,7 +14,7 @@ class Command(BaseCommand):
         module = importlib.import_module(module_name)
         dispatch = getattr(module, func_name)
         telegram = TelegramAPI(settings.BOT_TOKEN)
-        last_update = 0 or -1
+        last_update = 0
 
         try:
             while True:

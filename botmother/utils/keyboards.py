@@ -3,12 +3,12 @@ import json
 
 
 # ordinary keyboard
-def keyboard(buttons):
-    return {'keyboard': buttons, 'resize_keyboard': True}
+def keyboard(buttons, **kwargs):
+    return {'keyboard': buttons, 'resize_keyboard': True, **kwargs}
 
 
-def button(text, location=None, contact=None):
-    data = {'text': text}
+def button(text, location=None, contact=None, **kwargs):
+    data = {'text': text, **kwargs}
 
     if location:
         data['request_location'] = True
@@ -20,10 +20,10 @@ def button(text, location=None, contact=None):
 
 
 # inline keyboard
-def inline_keyboard(callback_buttons):
-    return {'inline_keyboard': callback_buttons, 'resize_keyboard': True}
+def inline_keyboard(callback_buttons, **kwargs):
+    return {'inline_keyboard': callback_buttons, 'resize_keyboard': True, **kwargs}
 
 
-def inline(text, data, key):
+def inline(text, data, key, **kwargs):
     assert isinstance(data, dict)
-    return {'text': text, 'callback_data': f"{key}--{json.dumps(data)}"}
+    return {'text': text, 'callback_data': f"{key}--{json.dumps(data)}", **kwargs}

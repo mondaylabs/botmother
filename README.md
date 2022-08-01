@@ -22,8 +22,8 @@
 Установка
 -----------
  1. Запустите команду:
- * http - `pip install git+https://github.com/mondaylabs/botmother.git@v1.2.1`
- * ssh  - `pip install git+ssh://git@github.com/mondaylabs/botmother.git@v1.2.1`
+ * http - `pip install git+https://github.com/mondaylabs/botmother.git@v1.2.2`
+ * ssh  - `pip install git+ssh://git@github.com/mondaylabs/botmother.git@v1.2.2`
 
 Библиотека установлена, идем дальше.
 
